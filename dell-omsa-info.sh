@@ -163,7 +163,47 @@ if [ -z "$RAID_FIRMWARE" ]
         then
                 RAID_FIRMWARE="Sorry I did't get that,Please contact SA!";
 fi
-echo "Raid controller model is :""$RAID_FIRMWARE";
+echo "Raid controller Firmware is :""$RAID_FIRMWARE";
+
+####################################
+#12)Get CPU info
+####################################
+
+#CPU_MODEL='';
+#CPU_SPEED='';
+
+
+"$OM_PATH" chassis processors | grep -i "Index" | \
+	while read LINE
+		do
+			read -a INDEX <<<$LINE;
+			if [ -n "${INDEX[2]}" ]
+				then
+					CPU_MODEL=`"$OM_PATH" chassis processors | grep -A3 "$LINE" | grep -i "Processor Brand" | awk '{print $7}'`;
+					CPU_SPEED=`"$OM_PATH" chassis processors | grep -A3 "$LINE" | grep -i "Processor Brand" | awk '{print $9}'`;
+					echo "$CPU_MODEL""-""$CPU_SPEED";
+			fi
+		done;
+
+if [ -z "$CPU_MODEL" ]
+        then
+                CPU_MODEL="Sorry I did't get that,Please contact SA!";
+fi
+echo "CPU is :""$CPU_MODEL";
+
+
+"$OM_PATH" chassis processors | grep -i "Index" >> /tmp/dell-omsa-info.tmp
+while read LINE
+	do
+		
+
+	done;<< /tmp/dell-omsa-info.tmp
+
+
+####################################
+#13)Get Memory total
+####################################
+
 
 
 
